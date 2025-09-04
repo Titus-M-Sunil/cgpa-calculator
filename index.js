@@ -5,10 +5,14 @@ let gradeValue = 0
 let creditValue = 0
 let numerator = 0
 let denominator = 0
+const container = document.getElementById("new-input-container")
+
+window.onload = function () {
+  createNewInputFields()
+  createNewInputFields()
+}
 
 function createNewInputFields() {
-  let container = document.getElementById("new-input-container")
-
   // New subject title
   const newSubject = document.createElement("p");
   newSubject.id = "subject-el-" + index
@@ -56,6 +60,22 @@ function createNewInputFields() {
 
   index++
 }
+
+// Add new semester
+let semIndex = 2
+const semesterBtn = document.getElementById("semester-btn")
+semesterBtn.addEventListener("click", function () {
+  const newSem = document.createElement("h2")
+  newSem.id = "semester-el-" + semIndex
+  newSem.className = "semesters"
+  newSem.textContent = "Semester " + semIndex
+  container.appendChild(newSem)
+  semIndex++
+  index = 1
+  
+  createNewInputFields()
+  createNewInputFields()
+})
 
 function calculateCGPA() {
   for(let i=1; i<index; i++) {

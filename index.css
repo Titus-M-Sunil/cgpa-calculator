@@ -1,19 +1,25 @@
 body {
   text-align: center;
+  min-width: 400px;
 }
 
 button {
-  margin-top: 8px;
+  margin-top: 2px;
 }
 
 input {
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 select {
-  margin-right: 8px;
+  margin-right: 12px;
 }
 
 .subjects {
   font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.semesters {
+  color: red;
 }
