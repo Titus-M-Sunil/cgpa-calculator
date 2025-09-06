@@ -16,7 +16,7 @@ const subjectBtn = document.getElementById("subject-btn")
 subjectBtn.addEventListener("click", createNewInputFields.bind())
 
 function createNewInputFields() {
-    // New subject title
+  // New subject title
   const newSubject = document.createElement("p");
   newSubject.id = "subject-el-" + index
   newSubject.className = "subjects"
@@ -47,7 +47,7 @@ function createNewInputFields() {
 
   // Input box for credits from 1-10
   newLabel = document.createElement("label")
-  newLabel.textContent = "Credit: "
+  newLabel.textContent = "Course Credits: "
 
   const newInput = document.createElement("input")
   newInput.id = "credit-el-" + index
@@ -71,6 +71,7 @@ function createNewInputFields() {
 let semIndex = 2
 const semesterBtn = document.getElementById("semester-btn")
 semesterBtn.addEventListener("click", function () {
+  calculateSGPA()
   const newSem = document.createElement("h2")
   newSem.id = "semester-el-" + semIndex
   newSem.className = "semesters"
@@ -87,45 +88,49 @@ semesterBtn.addEventListener("click", function () {
 const cgpaEl = document.getElementById("cgpa-el")
 const cgpaBtn = document.getElementById("cgpa-btn")
 const sgpaEl = document.getElementById("sgpa-el")
-const sgpaBtn = document.getElementById("sgpa-btn")
 const buttonContainer = document.getElementById("button-container")
 
-// Array to hold SGPAs of semesters to later calculate for CGPA
+// Arrays for storing previous sem total credit points(numeratorList) and total course credits(denominatorList)
 let sgpaList = []
+let numeratorList = []
+let denominatorList = []
 let initial = 1
 
-sgpaBtn.addEventListener("click", function () {
+const sgpaBtn = document.getElementById("sgpa-btn")
+sgpaBtn.addEventListener("click", calculateSGPA.bind())
+
+function calculateSGPA () {
   for(i=initial; i<index; i++) {
-    console.log("initial=", initial)
-    console.log("index=", index)
     creditValue = parseFloat(document.getElementById("credit-el-" + i).value)
     gradeValue = parseInt(document.getElementById("grade-el-" + i).value)
-    console.log("credit=",creditValue)
-    console.log("grade=",gradeValue)
     numerator += gradeValue * creditValue;
-    console.log("numerator=",numerator)
     denominator += creditValue;
-    console.log("denominator=",denominator)
   }
   let calculatedSGPA = numerator / denominator
+  numeratorList.push(numerator)
+  denominatorList.push(denominator)
   sgpaList.push(calculatedSGPA)
-  console.log(sgpaList)
 
   const newParaSGPA = document.createElement("p")
   newParaSGPA.textContent = "SGPA: " + calculatedSGPA.toFixed(2)
   container.appendChild(newParaSGPA)
 
   initial = index
-})
+  numerator = denominator = 0
+}
 
 let cgpaSum = 0
 cgpaBtn.addEventListener("click", function () {
+  calculateSGPA ()
   for(let i=0; i<sgpaList.length; i++) {
-    cgpaSum += sgpaList[i]
+    numerator += numeratorList[i]
+    denominator += denominatorList[i]
   }
-  const totalCGPA = cgpaSum / sgpaList.length
+  const totalCGPA = numerator / denominator
 
   const newParaCGPA = document.createElement("p")
   newParaCGPA.textContent = "CGPA: " + totalCGPA.toFixed(2)
   container.appendChild(newParaCGPA)
+
+  numerator = denominator = 0
 })
